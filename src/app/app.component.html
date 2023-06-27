@@ -1,8 +1,23 @@
 <nav class="navbar bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Apollo Client</a>
+  <div class="flex-container">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Apollo Client</a>
+    </div>
+    <div>
+      <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+        <button class="btn-logout" (click)="auth.logout({ logoutParams: { returnTo: document.location.origin } })">
+          Log out
+        </button>
+      </ng-container>
+      <ng-template #loggedOut>
+        <!-- <button (click)="auth.loginWithRedirect()">Log in</button> -->
+      </ng-template>
+    </div>
   </div>
+ 
 </nav>
+
+
 <main class="p-4">
   <router-outlet></router-outlet>
 </main>

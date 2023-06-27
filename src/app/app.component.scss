@@ -1,0 +1,19 @@
+.flex-container {
+    width: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: row;
+    /* Cross axis align */
+    align-items: center;
+    /* Main axis center */
+    justify-content: space-between;
+    padding: 15px;
+}
+.btn-logout{
+    width: 110px;
+    background-color: #1e4462;
+    border-radius: 5px;
+    line-height: 35px;
+    cursor: pointer;
+    color: white;
+}

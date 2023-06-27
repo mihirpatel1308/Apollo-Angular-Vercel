@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
 import { MyInterceptorInterceptor } from './my-interceptor.interceptor';
+import { CoreModule } from './core/core.module';
+import { AuthModule } from '@auth0/auth0-angular';
 
 
 @NgModule({
@@ -17,9 +19,17 @@ import { MyInterceptorInterceptor } from './my-interceptor.interceptor';
   ],
   imports: [
     BrowserModule,
+    CoreModule,
     AppRoutingModule,
     HttpClientModule,
     GraphQLModule,
+    AuthModule.forRoot({
+      domain: 'dev-qel4c52gve5yd8kj.us.auth0.com',
+      clientId: 'nZ9SyVljqJmr2rKQPiokHL4eNeVXJBDR',
+      authorizationParams: {
+        redirect_uri: 'https://apollo-angular-vercel.vercel.app/auth-callback'
+      }
+    }),
   ],
   providers: [
     {
