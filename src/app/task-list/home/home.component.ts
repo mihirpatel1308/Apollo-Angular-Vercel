@@ -3,6 +3,8 @@ import { Apollo } from 'apollo-angular';
 import { Observable, map, of } from 'rxjs';
 import { TaskList } from '../task-list';
 import { GET_BookList, GET_TaskList, UPDATE_TaskList } from '../gql/task-list-query';
+import { DemoService } from '../demo.service';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,9 @@ import { GET_BookList, GET_TaskList, UPDATE_TaskList } from '../gql/task-list-qu
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo,
+    private demoService: DemoService, public auth: AuthService) { }
+
 
   allBookList$: Observable<any[]> = of([]);
   isUpdate: boolean = false;
@@ -22,6 +26,21 @@ export class HomeComponent implements OnInit {
       })
       .valueChanges.pipe(map((result) => result.data.books))
 
+    this.getToursData();
   }
 
+
+  getToursData() {
+    this.auth.idTokenClaims$.subscribe(
+      (profile) => {
+        const accessToken = profile?.__raw;
+        console.log('accessToken : ', accessToken);
+        this.demoService.getTours(accessToken ? accessToken : '').subscribe((response: any) => {
+          console.log('response : ', response);
+
+        });
+      },
+    );
+
+  }
 }

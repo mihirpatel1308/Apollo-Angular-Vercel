@@ -13,11 +13,17 @@ export class AppComponent implements OnInit {
   rates: any[] = [];
   loading = true;
   error: any;
+  profileJson: any = null;
   constructor(private apollo: Apollo,
     public auth: AuthService,
     @Inject(DOCUMENT) public document: Document) {
   }
   ngOnInit() {
+    this.auth.user$.subscribe(
+      (profile) => {
+        this.profileJson = JSON.stringify(profile, null, 2)
+      },
+    );
 
   }
 

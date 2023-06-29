@@ -13,7 +13,6 @@ export class AuthCallbackComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    debugger
     this.auth.user$.subscribe((userData: any) => {
       if (userData && !!userData.email) {
         this.router.navigate(['task-list']);
