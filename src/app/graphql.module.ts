@@ -4,26 +4,27 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ApolloLink, InMemoryCache } from '@apollo/client/core';
 import { setContext } from '@apollo/client/link/context';
+import { AuthService } from '@auth0/auth0-angular';
 
 const uri = 'https://node-graph-ql-vercel.vercel.app/graphql';
 
 export function createApollo(httpLink: HttpLink) {
-  const basic = setContext((operation, context) => ({
+   const basic = setContext((operation, context) => ({
     headers: {
       Accept: 'charset=utf-8',
     },
   }));
 
   const auth = setContext((operation, context) => {
-    const token = sessionStorage.getItem('Token');
-    console.log('token : ', token);
+    const token = localStorage.getItem('token');
+    console.log('token:', token);
 
     if (token === null) {
       return {};
     } else {
       return {
         headers: {
-          Authorization: `JWT ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
     }
@@ -48,4 +49,10 @@ export function createApollo(httpLink: HttpLink) {
     },
   ],
 })
-export class GraphQLModule { }
+export class GraphQLModule {
+  constructor(auth: AuthService) {
+    auth.idTokenClaims$.subscribe((claims) => {
+      localStorage.setItem('token', claims!.__raw);
+    });
+  }
+}
