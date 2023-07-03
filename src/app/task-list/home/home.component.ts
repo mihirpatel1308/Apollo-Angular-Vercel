@@ -26,21 +26,10 @@ export class HomeComponent implements OnInit {
       })
       .valueChanges.pipe(map((result) => result.data.books))
 
-    this.getToursData();
-  }
 
+    this.demoService.getTours().subscribe((response: any) => {
+      console.log('response : ', response);
 
-  getToursData() {
-    this.auth.idTokenClaims$.subscribe(
-      (profile) => {
-        const accessToken = profile?.__raw;
-        console.log('accessToken : ', accessToken);
-        this.demoService.getTours(accessToken ? accessToken : '').subscribe((response: any) => {
-          console.log('response : ', response);
-
-        });
-      },
-    );
-
+    });
   }
 }

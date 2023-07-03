@@ -10,7 +10,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
 import { MyInterceptorInterceptor } from './my-interceptor.interceptor';
 import { CoreModule } from './core/core.module';
-import { AuthModule } from '@auth0/auth0-angular';
+import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 
 
 @NgModule({
@@ -27,17 +27,25 @@ import { AuthModule } from '@auth0/auth0-angular';
       domain: 'dev-qel4c52gve5yd8kj.us.auth0.com',
       clientId: 'nZ9SyVljqJmr2rKQPiokHL4eNeVXJBDR',
       authorizationParams: {
-        // redirect_uri: 'http://localhost:4200/auth-callback'
-        redirect_uri: 'https://apollo-angular-vercel.vercel.app/auth-callback'
-      }
+        redirect_uri: 'http://localhost:4200/auth-callback'
+        // redirect_uri: 'https://apollo-angular-vercel.vercel.app/auth-callback'
+      },
+      httpInterceptor: {
+        allowedList: [`https://node-graph-ql-vercel.vercel.app/api/*`],
+      },
     }),
   ],
   providers: [
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: MyInterceptorInterceptor,
+    //   multi: true
+    // }
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: MyInterceptorInterceptor,
-      multi: true
-    }
+      useClass: AuthHttpInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent]
 })
